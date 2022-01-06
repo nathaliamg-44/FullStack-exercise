@@ -1,0 +1,117 @@
+Install
+	python 
+	visual	
+	postman
+	nodejs (probar npm -v)
+	sqlite
+
+Prepare a Django project
+	'cmd'
+		pip install django
+		pip install djangorestframework
+		pip install django-cors-headers (disable security blocks)
+
+Create a Django project (select folder, cmd)
+	django-admin startproject nameAPI
+
+Open Visual Code with files 
+	cmd
+		code .
+
+Run app in the server (cmd /nameApi)
+	python manage.py runserver
+	url project -> http://127.0.0.1:8000
+
+Put project like App (cmd /nameApi)
+	python manage.py startapp NameApp
+
+Add in settings.py 
+	INSTALLED_APPS = [
+		 'rest_framework',
+		 'corsheaders',
+		 'EmployeeApp.apps.EmployeeappConfig',
+]
+	MIDDLEWARE = [
+	 'corsheaders.middleware.CorsMiddleware',
+
+CORS_ORIGIN_ALLOW_ALL = Tru
+
+Create two modals (departament and employee details)
+	models.py 
+		class Departments(models.Model):
+    			DepartmentId= models.AutoField(primary_key=True)
+    			DepartmentName = models.CharField(max_length=500)
+
+		class Employees(models.Model):
+    			EmployeeId= models.AutoField(primary_key=True)
+    			EmployeeName = models.CharField(max_length=500)
+   			Department = models.CharField(max_length=500)
+    			DateOfJoining =  models.DateField()
+    			Photo = models.CharField(max_length=500)
+
+Migrate database to sqlite studio (cmd /nameApi)
+	python manage.py makemigrations EmployeeApp
+ //push changes to the database
+	python manage.py migrate EmployeeApp
+	
+SQLite (add fields)
+	select * from EmployeeApp_departments;
+insert into EmployeeApp_departments values (1,'IT');
+insert into EmployeeApp_departments values (2,'Support');
+select * from EmployeeApp_employees;
+insert into EmployeeApp_employees values (1,'Nathalia','IT','2022-04-02','photo.jpg');
+
+Create serializers.py to help to convert the complex types or model
+	from rest_framework import serializers
+	from EmployeeApp.models import Departments, Employees
+	class DepartmentSerializer(serializers.ModelSerializer):
+    		class Meta:
+       		model=Departments
+        	fields=('DepartmentId', 'DepartmentName')
+
+	class EmployeeSerializer(serializers.ModelSerializer):
+    		class Meta:
+       		model=Employees
+        	fields=('EmployeeId','EmployeeName','Department', 'DateOfJoining', 'Photo')
+
+Create views 
+@crsf_exempt
+Normalmente, cuando realiza una solicitud a través de un formulario, desea que el formulario que se envía a su vista se 
+origine en su sitio web y no en otro dominio. Para asegurarse de que esto suceda, puede poner un token csrf en su 
+formulario para que su vista lo reconozca. Si agrega @csrf_exempta la parte superior de su vista, entonces básicamente 
+le está diciendo a la vista que no necesita el token. Esta es una exención de seguridad que debe tomar en serio.
+-
+Controller 'GET', 'POST','PUT','DELETE' to employee and department
+
+Create a method to save the uploaded profile picture
+	settings.py
+		BASE_DIR= Path(__file__).resolve(strict=True).parent.parent
+		MEDIA_URL='/Photos/'
+		MEDIA_ROOT=os.path.join(BASE_DIR, "Photos")
+
+***** Backend with Django using python.
+
+***** Frontend with Angular using TypeScript
+
+Install Angular
+	new folder in principal folder (cmd-install global)
+		npm install -g @angular/cli  
+	verificate
+		ng --version
+
+Create an Angular project 
+	cmd	
+		ng new nameApp
+	Active 
+		ng serve --open
+
+Add 3 components/pages
+	cmd	
+		ng generate component home
+		ng generate component department
+		ng generate component employee
+
+Adds an entry of each component in the model file 
+Create navigation menu
+New 3 routs of pages
+tables Boopstrap in environments.ts
